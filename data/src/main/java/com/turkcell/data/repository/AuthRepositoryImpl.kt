@@ -1,5 +1,6 @@
 package com.turkcell.data.repository
 
+import android.util.Log.i
 import com.turkcell.core.domain.AuthRepository
 import com.turkcell.core.domain.AuthSession
 import com.turkcell.core.domain.User
@@ -35,8 +36,18 @@ class AuthRepositoryImpl(private val authApi: AuthApi) : AuthRepository {
     override suspend fun register(
         email: String,
         password: String
-    ): Result<AuthSession> {
-        TODO("Not yet implemented")
+    ): Result<AuthSession> =runCatchingApi{
+       authApi.register(CredentialsDto(email=email,password=password))
+    }.onSuccess {
+
+    }.map {i->
+        AuthSession(
+            user = User(
+                i.user.id, i.user.email, UserRole.fromApi(i.user.role),
+            ),
+            accessToken = i.accessToken,
+            refreshToken = i.refreshToken
+        )
     }
 
     override suspend fun logout(): Result<Unit> {

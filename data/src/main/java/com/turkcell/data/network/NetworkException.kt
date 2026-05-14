@@ -1,7 +1,7 @@
 package com.turkcell.data.network
 
 
-class NetworkException(cause: Throwable) : RuntimeException("Network Error", cause)
+class   NetworkException(cause: Throwable) : RuntimeException("Network Error", cause)
 
 
 class ApiException(

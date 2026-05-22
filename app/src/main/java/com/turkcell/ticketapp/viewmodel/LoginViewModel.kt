@@ -19,7 +19,7 @@ data class LoginUiState(
     val errorMessage: String? = null,
     val isLoggedIn: Boolean = false
 ) {
-    val canSubmit: Boolean get() = email.isNotBlank() && password.length >= 8 && !isLoading
+    val canSubmit: Boolean get() = email.isNotBlank() && password.length >= 7 && !isLoading
 }
 
 class LoginViewModel(

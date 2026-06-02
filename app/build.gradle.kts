@@ -47,6 +47,7 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -72,5 +73,9 @@ dependencies {
     // ViewModel+Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation("io.github.g0dkar:qrcode-kotlin-android:4.1.1")
+
+    implementation("androidx.compose.material:material-icons-extended")
 
 }

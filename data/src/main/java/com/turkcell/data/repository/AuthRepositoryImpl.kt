@@ -1,11 +1,11 @@
 package com.turkcell.data.repository
 
-import android.util.Log.i
-import com.turkcell.core.domain.AuthRepository
-import com.turkcell.core.domain.AuthSession
-import com.turkcell.core.domain.User
-import com.turkcell.core.domain.UserRole
+import com.turkcell.core.domain.auth.AuthRepository
+import com.turkcell.core.domain.auth.AuthSession
+import com.turkcell.core.domain.auth.User
+import com.turkcell.core.domain.auth.UserRole
 import com.turkcell.data.dto.CredentialsDto
+import com.turkcell.data.dto.LogoutRequestDto
 import com.turkcell.data.local.TokenStore
 import com.turkcell.data.remote.AuthApi
 import com.turkcell.data.util.runCatchingApi
@@ -57,7 +57,12 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun logout(): Result<Unit> {
-        TODO("Not yet implemented")
+        val refreshToken = tokenStore.refreshTokenBlocking()
+        if (refreshToken != null) {
+            runCatchingApi { authApi.logout(LogoutRequestDto(refreshToken)) }
+        }
+        tokenStore.clear()
+        return Result.success(Unit)
     }
 
 

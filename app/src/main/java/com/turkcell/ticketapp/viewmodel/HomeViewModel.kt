@@ -2,6 +2,7 @@ package com.turkcell.ticketapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.turkcell.core.domain.auth.AuthRepository
 import com.turkcell.core.domain.event.Event
 import com.turkcell.core.domain.event.EventRepository
 import com.turkcell.core.domain.event.Ticket
@@ -24,7 +25,8 @@ data class HomeUiState(
 
 class HomeViewModel(
     private val ticketRepository: TicketRepository,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -80,6 +82,12 @@ class HomeViewModel(
     }
 
     fun onTabSelected(index: Int) = _state.update { it.copy(selectedTab = index) }
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
+    }
 
 
 }

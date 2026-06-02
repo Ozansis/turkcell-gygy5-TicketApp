@@ -11,4 +11,9 @@ class EventRepositoryImpl(
 ) : EventRepository {
     override suspend fun getEvents(upcoming: Boolean): Result<List<Event>> = runCatchingApi {eventApi.getEvents()}.map { list -> list.map { it.toDomain()  } }
 
+
+    override suspend fun getEventById(id: String): Result<Event> = runCatchingApi {
+        eventApi.getEvent(id)
+    }.map { it -> it.toDomain()}
+
 }

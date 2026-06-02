@@ -21,7 +21,7 @@ class TokenAuthenticator(
         // İstek 401'e düştüğü anda, eğer sistemde jwt-refresh pairi tanımlıysa git refresh ile yeni jwt alıp isteği tekrar dene.
         val refreshToken = tokenStore.refreshTokenBlocking() ?: return null;
 
-        return synchronized(this) // lock
+        return synchronized(this) // lock sadece bir thread girebilir diğerleri bekler
         {
             // Bu blokta birden fazla istek aynı anda 401 alırsa kuyruğa girer..
             // Blok bitene kadar, yeni yapıları beklet..

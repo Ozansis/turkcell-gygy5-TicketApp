@@ -1,5 +1,6 @@
 package com.turkcell.ticketapp.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.turkcell.core.domain.auth.AuthRepository
@@ -7,6 +8,8 @@ import com.turkcell.core.domain.event.Event
 import com.turkcell.core.domain.event.EventRepository
 import com.turkcell.core.domain.event.Ticket
 import com.turkcell.core.domain.event.TicketRepository
+import com.turkcell.ticketapp.R
+import com.turkcell.ticketapp.util.toUserMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,13 +20,15 @@ import kotlinx.coroutines.launch
 data class HomeUiState(
     val events: List<Event> = emptyList(),
     val tickets: List<Ticket> = emptyList(),
-    val isLoading: Boolean = false,
+    val isEventsLoading: Boolean = false,
+    val isTicketsLoading: Boolean = false,
     val errorMessage: String? = null,
     val selectedTab: Int = 0
 )
 
 
 class HomeViewModel(
+    private val application: Application,
     private val ticketRepository: TicketRepository,
     private val eventRepository: EventRepository,
     private val authRepository: AuthRepository
@@ -40,19 +45,19 @@ class HomeViewModel(
 
     fun loadEvent() {
 
-        _state.update { it.copy(isLoading = true, errorMessage = null) }
+        _state.update { it.copy(isEventsLoading = true, errorMessage = null) }
 
 
         viewModelScope.launch {
             eventRepository.getEvents().fold(
                 onSuccess = { list ->
-                    _state.update { it.copy(events = list, isLoading = false, errorMessage = null) }
+                    _state.update { it.copy(events = list, isEventsLoading = false, errorMessage = null) }
                 },
                 onFailure = { e ->
                     _state.update {
                         it.copy(
-                            isLoading = false,
-                            errorMessage = e.message ?: "Etkinlikler yüklenemedi."
+                            isEventsLoading = false,
+                            errorMessage = e.toUserMessage(application)
                         )
                     }
                 }
@@ -61,19 +66,19 @@ class HomeViewModel(
     }
     fun loadTicket() {
 
-        _state.update { it.copy(isLoading = true, errorMessage = null) }
+        _state.update { it.copy(isTicketsLoading = true, errorMessage = null) }
 
 
         viewModelScope.launch {
             ticketRepository.getMyTickets().fold(
                 onSuccess = { list ->
-                    _state.update { it.copy(tickets = list, isLoading = false, errorMessage = null) }
+                    _state.update { it.copy(tickets = list, isTicketsLoading = false, errorMessage = null) }
                 },
                 onFailure = { e ->
                     _state.update {
                         it.copy(
-                            isLoading = false,
-                            errorMessage = e.message ?: "Biletler yüklenemedi."
+                            isTicketsLoading = false,
+                            errorMessage = e.toUserMessage(application)
                         )
                     }
                 }

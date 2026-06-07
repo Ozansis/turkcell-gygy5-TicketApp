@@ -16,6 +16,6 @@ interface PurchaseApi {
     suspend fun pay(@Path("id") id : String,@Body body: Unit = Unit) : PurchaseDto
 
     @GET("/purchases/{id}")
-    suspend fun getPurchases(@Path("id") id : String) : PurchaseDto
+    suspend fun getPurchase(@Path("id") id : String) : PurchaseDto
 
 }

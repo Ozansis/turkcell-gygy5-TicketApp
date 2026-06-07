@@ -7,9 +7,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.turkcell.core.domain.event.TicketType
+import com.turkcell.ticketapp.R
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -41,7 +43,7 @@ fun TicketCard(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "Kalan: ${ticket.remaining} / ${ticket.capacity}",
+                    text = stringResource(R.string.ticket_remaining, ticket.remaining, ticket.capacity),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -56,7 +58,7 @@ fun TicketCard(
 
                 if (ticket.remaining==0L) {
                     Text(
-                        text = "TÜKENDİ",
+                        text = stringResource(R.string.ticket_sold_out),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold

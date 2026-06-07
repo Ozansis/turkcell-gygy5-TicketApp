@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,10 +16,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.turkcell.core.domain.auth.AuthRepository
+import com.turkcell.core.domain.auth.UserRole
 import com.turkcell.ticketapp.screen.EventDetailScreen
 import com.turkcell.ticketapp.screen.HomeScreen
 import com.turkcell.ticketapp.screen.LoginScreen
 import com.turkcell.ticketapp.screen.RegisterScreen
+import com.turkcell.ticketapp.screen.StaffScreen
 import com.turkcell.ticketapp.screen.TicketDetailScreen
 import org.koin.compose.koinInject
 
@@ -31,11 +32,15 @@ fun AppNavHost(
     authRepository: AuthRepository = koinInject()
 ) {
     val isLoggedIn by authRepository.isLoggedIn.collectAsStateWithLifecycle(initialValue = null)
+    val currentRole by authRepository.currentRole.collectAsStateWithLifecycle(initialValue = UserRole.USER)
 
     when (isLoggedIn) {
-        null -> SplashScreen()
-        true -> AuthedNavHost(navController)
+        null  -> SplashScreen()
         false -> UnAuthedNavHost(navController)
+        true  -> when (currentRole) {
+            UserRole.STAFF, UserRole.ADMIN -> StaffNavHost(navController)
+            UserRole.USER                  -> AuthedNavHost(navController)
+        }
     }
 }
 
@@ -63,36 +68,41 @@ private fun AuthedNavHost(navController: NavHostController) {
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<EventDetail> {it ->
+        composable<EventDetail> {
             val route = it.toRoute<EventDetail>()
             EventDetailScreen(
                 id = route.id,
-                onBackClick = {navController.popBackStack()},
+                onBackClick = { navController.popBackStack() },
                 onPurchaseSuccess = { navController.navigate(Home) }
-
-
             )
+        }
+    }
+}
 
+
+@Composable
+private fun StaffNavHost(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Staff) {
+        composable<Staff> {
+            StaffScreen()
         }
     }
 }
 
 @Composable
 private fun UnAuthedNavHost(navController: NavHostController) {
-
     NavHost(navController = navController, startDestination = Login) {
         composable<Login> {
             LoginScreen(
-                onLoginSuccess = {navController.navigate(Home)},
+                onLoginSuccess = { navController.navigate(Home) },
                 onNavigateToRegister = { navController.navigate(Register) }
             )
         }
         composable<Register> {
             RegisterScreen(
                 onNavigateToLogin = { navController.navigate(Login) },
-                onRegisterSuccess = {navController.navigate(Home)}
+                onRegisterSuccess = { navController.navigate(Home) }
             )
         }
     }
-
 }

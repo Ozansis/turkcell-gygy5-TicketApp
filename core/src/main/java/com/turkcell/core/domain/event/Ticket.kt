@@ -10,7 +10,7 @@ data class Ticket(
 
     // bilet türü bilgileri
     val ticketTypeName: String,
-    val ticketTypePriceCents: Int,
+    val ticketTypePriceCents: Long,
 
     // etkinlik bilgileri — ticketType içinden çıkardım
     val eventId: String,

@@ -1,8 +1,10 @@
 package com.turkcell.ticketapp.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.turkcell.core.domain.auth.AuthRepository
+import com.turkcell.ticketapp.util.toUserMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +17,7 @@ data class RegisterUiState(
     val password: String = "",
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val isRegisterIn: Boolean = false
+    val isRegistered: Boolean = false
 ){
     val canSubmit: Boolean get() = email.isNotBlank() && password.length >= 8 && !isLoading
 
@@ -23,6 +25,7 @@ data class RegisterUiState(
 
 
 class RegisterViewModel(
+    private val application: Application,
     private val authRepository: AuthRepository
 ): ViewModel(){
 
@@ -34,8 +37,6 @@ class RegisterViewModel(
     fun onPasswordChange(value: String) =
         _state.update { it.copy(password = value, errorMessage = null) }
 
-    fun consumeError() = _state.update { it.copy(errorMessage = null) }
-
     fun submit() {
         val current = _state.value
         if (!current.canSubmit) return
@@ -44,16 +45,15 @@ class RegisterViewModel(
 
         viewModelScope.launch {
             authRepository.register(current.email, current.password)
-                .onSuccess { _state.update { it.copy(isLoading = false, isRegisterIn = true) } }
+                .onSuccess { _state.update { it.copy(isLoading = false, isRegistered = true) } }
                 .onFailure { error ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = error.toUserMessage()
+                            errorMessage = error.toUserMessage(application)
                         )
                     }
                 }
         }
     }
 }
-

@@ -1,3 +1,70 @@
 <resources>
     <string name="app_name">Ticket App</string>
+
+    <!-- Login -->
+    <string name="login_title">Giriş Yap</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Şifre</string>
+    <string name="btn_login">Giriş Yap</string>
+    <string name="login_register_prompt">Hesabın yok mu? Kayıt ol</string>
+
+    <!-- Register -->
+    <string name="register_title">Kayıt Ol</string>
+    <string name="btn_register">Kayıt Ol</string>
+    <string name="register_login_prompt">Zaten hesabın var mı? Giriş yap</string>
+
+    <!-- Home -->
+    <string name="tab_events">Etkinlikler</string>
+    <string name="tab_my_tickets">Biletlerim</string>
+    <string name="app_bar_title">TicketApp</string>
+    <string name="cd_logout">Çıkış</string>
+    <string name="empty_events">Henüz etkinlik yok.</string>
+    <string name="empty_tickets">Henüz bilet almadınız.</string>
+
+    <!-- Event Detail -->
+    <string name="dialog_payment_title">Ödeme Onayı</string>
+    <string name="dialog_payment_text">Toplam: ₺%1$s. Onaylıyor musun?</string>
+    <string name="btn_confirm">Onayla</string>
+    <string name="btn_cancel">Vazgeç</string>
+    <string name="event_detail_title">Etkinlik Detay</string>
+    <string name="cd_back">Geri</string>
+    <string name="cd_share">Paylaş</string>
+    <string name="label_description">Açıklama</string>
+    <string name="label_ticket_selection">Bilet Seçimi</string>
+
+    <!-- Ticket Detail -->
+    <string name="ticket_detail_title">Biletim</string>
+    <string name="cd_qr_code">QR Kod</string>
+
+    <!-- Components -->
+    <string name="ticket_sold_out">TÜKENDİ</string>
+    <string name="ticket_remaining">Kalan: %1$d / %2$d</string>
+    <string name="label_total_amount">Toplam Tutar</string>
+    <string name="btn_buy_ticket">Bilet Al</string>
+    <string name="cd_decrease">Azalt</string>
+    <string name="cd_increase">Artır</string>
+
+    <!-- Staff -->
+    <string name="staff_screen_title">Staff Check-in</string>
+    <string name="staff_btn_scan_qr">QR Kodu Tara</string>
+    <string name="staff_qr_scan_prompt">QR Kodu Çerçeveye Getir</string>
+    <string name="staff_checkin_success">Giriş Başarılı</string>
+    <string name="staff_label_ticket">Bilet: %1$s</string>
+    <string name="staff_label_event">Etkinlik: %1$s</string>
+    <string name="staff_label_venue">Mekan: %1$s</string>
+    <string name="staff_label_checkin_time">Giriş: %1$s</string>
+    <string name="staff_assigned_events_title">Atanan Etkinlikler</string>
+    <string name="staff_empty_events">Atanan etkinlik yok.</string>
+
+    <!-- Errors -->
+    <string name="error_invalid_credentials">Email veya şifre hatalı</string>
+    <string name="error_forbidden">Bu işlem için yetkiniz yok</string>
+    <string name="error_not_found">Kayıt bulunamadı</string>
+    <string name="error_conflict">İşlem çakışması oluştu</string>
+    <string name="error_server">Sunucu şu anda cevap veremiyor</string>
+    <string name="error_unexpected">Beklenmeyen bir hata oluştu</string>
+    <string name="error_no_internet">İnternet bağlantısı yok</string>
+    <string name="error_unknown">Bilinmeyen bir hata oluştu</string>
+    <string name="error_events_load">Etkinlikler yüklenemedi</string>
+    <string name="error_tickets_load">Biletler yüklenemedi</string>
 </resources>

@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.turkcell.ticketapp.R
 
 
 @Composable
@@ -32,7 +34,7 @@ fun QuantitySelector(
             onClick = onDecrease,
             modifier = Modifier.size(32.dp)
         ) {
-            Icon(Icons.Default.Remove, contentDescription = "Azalt")
+            Icon(Icons.Default.Remove, contentDescription = stringResource(R.string.cd_decrease))
 
         }
 
@@ -45,7 +47,7 @@ fun QuantitySelector(
             onClick = onIncrease,
             modifier = Modifier.size(32.dp)
         ) {
-            Icon(Icons.Default.Add, contentDescription = "Artır")
+            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.cd_increase))
 
         }
 

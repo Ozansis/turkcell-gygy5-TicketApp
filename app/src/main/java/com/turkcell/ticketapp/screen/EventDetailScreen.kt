@@ -38,10 +38,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.turkcell.core.util.formatEventDate
+import com.turkcell.ticketapp.R
 import com.turkcell.ticketapp.navigation.EventDetail
 import com.turkcell.ticketapp.screen.components.BottomPurchaseBar
 import com.turkcell.ticketapp.screen.components.TicketCard
@@ -71,16 +73,16 @@ fun EventDetailScreen(
     if (state.pendingPurchaseId != null) {
         AlertDialog(
             onDismissRequest = {},
-            title = { Text("Ödeme Onayı") },
-            text = { Text("Toplam: ₺${"%.2f".format(state.totalCents / 100.0)}. Onaylıyor musun?") },
+            title = { Text(stringResource(R.string.dialog_payment_title)) },
+            text = { Text(stringResource(R.string.dialog_payment_text, "%.2f".format(state.totalCents / 100.0))) },
             confirmButton = {
                 Button(onClick = { viewModel.pay(state.pendingPurchaseId!!) }) {
-                    Text("Onayla")
+                    Text(stringResource(R.string.btn_confirm))
                 }
             },
             dismissButton = {
                 TextButton(onClick = {}) {
-                    Text("Vazgeç")
+                    Text(stringResource(R.string.btn_cancel))
                 }
             }
         )
@@ -107,18 +109,18 @@ fun EventDetailScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Etkinlik Detay", style = MaterialTheme.typography.titleLarge) },
+                title = { Text(stringResource(R.string.event_detail_title), style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.cd_back)
                         )
                     }
                 },
                 actions = {
                     IconButton(onClick = onShareClick) {
-                        Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
+                        Icon(imageVector = Icons.Default.Share, contentDescription = stringResource(R.string.cd_share))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -152,11 +154,11 @@ fun EventDetailScreen(
                     Text(formatEventDate(event.startsAt), style = MaterialTheme.typography.bodySmall)
 
                     Spacer(Modifier.height(16.dp))
-                    Text("Açıklama", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.label_description), style = MaterialTheme.typography.titleMedium)
                     Text(event.description, style = MaterialTheme.typography.bodyMedium)
 
                     Spacer(Modifier.height(16.dp))
-                    Text("Bilet Seçimi", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.label_ticket_selection), style = MaterialTheme.typography.titleMedium)
                 }
             }
 
@@ -176,4 +178,3 @@ fun EventDetailScreen(
     }
 
 }
-

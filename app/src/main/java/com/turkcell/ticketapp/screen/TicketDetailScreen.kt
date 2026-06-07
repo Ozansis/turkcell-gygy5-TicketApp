@@ -31,9 +31,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.turkcell.ticketapp.R
 import com.turkcell.ticketapp.viewmodel.TicketDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -66,10 +68,10 @@ fun TicketDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Biletim") },
+                title = { Text(stringResource(R.string.ticket_detail_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 }
             )
@@ -111,7 +113,7 @@ fun TicketDetailScreen(
                     if (qrBitmap != null) {
                         Image(
                             bitmap = qrBitmap.asImageBitmap(),
-                            contentDescription = "QR Kod",
+                            contentDescription = stringResource(R.string.cd_qr_code),
                             modifier = Modifier.size(260.dp)
                         )
                     }

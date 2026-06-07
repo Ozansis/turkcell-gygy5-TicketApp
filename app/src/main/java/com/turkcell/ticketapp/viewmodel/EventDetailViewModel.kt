@@ -1,7 +1,6 @@
 package com.turkcell.ticketapp.viewmodel
 
-import android.util.Log.i
-import androidx.compose.runtime.currentComposer
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.turkcell.core.domain.event.Event
@@ -9,6 +8,7 @@ import com.turkcell.core.domain.event.EventRepository
 import com.turkcell.core.domain.event.Ticket
 import com.turkcell.core.domain.event.TicketType
 import com.turkcell.core.domain.purchase.PurchaseRepository
+import com.turkcell.ticketapp.util.toUserMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +32,12 @@ data class EventDetailUiState(
 
 }
 
-class EventDetailViewModel(private val eventRepository: EventRepository,private val purchaseRepository: PurchaseRepository, id: String) : ViewModel() {
+class EventDetailViewModel(
+    private val application: Application,
+    private val eventRepository: EventRepository,
+    private val purchaseRepository: PurchaseRepository,
+    id: String
+) : ViewModel() {
 
 
     private val _state = MutableStateFlow(EventDetailUiState())
@@ -54,7 +59,7 @@ class EventDetailViewModel(private val eventRepository: EventRepository,private 
                 },
                 onFailure = { error ->
                     _state.update {
-                        it.copy(isLoading = false, errorMessage = error.toUserMessage())
+                        it.copy(isLoading = false, errorMessage = error.toUserMessage(application))
                     }
 
                 }
@@ -102,7 +107,7 @@ class EventDetailViewModel(private val eventRepository: EventRepository,private 
                     _state.update { it.copy(isLoading = false, pendingPurchaseId = purchase.id) }
                 },
                 onFailure = { error ->
-                    _state.update { it.copy(isLoading = false, errorMessage = error.toUserMessage()) }
+                    _state.update { it.copy(isLoading = false, errorMessage = error.toUserMessage(application)) }
                 }
             )
         }
@@ -117,7 +122,7 @@ class EventDetailViewModel(private val eventRepository: EventRepository,private 
                     _state.update { it.copy(isLoading = false, isPaid = true) }
                 },
                 onFailure = { error ->
-                    _state.update { it.copy(isLoading = false, errorMessage = error.toUserMessage()) }
+                    _state.update { it.copy(isLoading = false, errorMessage = error.toUserMessage(application)) }
                 }
             )
         }

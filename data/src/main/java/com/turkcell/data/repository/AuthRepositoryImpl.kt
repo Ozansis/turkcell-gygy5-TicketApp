@@ -19,25 +19,26 @@ class AuthRepositoryImpl(
 
     override val isLoggedIn: Flow<Boolean> = tokenStore.accessToken.map { it != null }
 
+    override val currentRole: Flow<UserRole> = tokenStore.userRole
+
     override suspend fun login(
         email: String,
         password: String
     ): Result<AuthSession> = runCatchingApi {
         authApi.login(CredentialsDto(email = email, password = password))
     }.onSuccess {
-        // jwt'i bi yere yaz..
-        tokenStore.save(it.accessToken, it.refreshToken)
-
+        tokenStore.save(it.accessToken, it.refreshToken, it.user.role) // ← role eklendi
+    }.map { tokenPairDto ->
+        AuthSession(
+            user = User(
+                tokenPairDto.user.id,
+                tokenPairDto.user.email,
+                UserRole.fromApi(tokenPairDto.user.role)
+            ),
+            accessToken = tokenPairDto.accessToken,
+            refreshToken = tokenPairDto.refreshToken
+        )
     }
-        .map { tokenPairDto ->
-            AuthSession(
-                user = User(
-                    tokenPairDto.user.id, tokenPairDto.user.email, UserRole.fromApi(tokenPairDto.user.role),
-                ),
-                accessToken = tokenPairDto.accessToken,
-                refreshToken = tokenPairDto.refreshToken
-            )
-        }
 
     override suspend fun register(
         email: String,
@@ -45,11 +46,13 @@ class AuthRepositoryImpl(
     ): Result<AuthSession> = runCatchingApi {
         authApi.register(CredentialsDto(email = email, password = password))
     }.onSuccess {
-
+        tokenStore.save(it.accessToken, it.refreshToken, it.user.role) // ← düzeltildi
     }.map { i ->
         AuthSession(
             user = User(
-                i.user.id, i.user.email, UserRole.fromApi(i.user.role),
+                i.user.id,
+                i.user.email,
+                UserRole.fromApi(i.user.role)
             ),
             accessToken = i.accessToken,
             refreshToken = i.refreshToken
@@ -64,6 +67,4 @@ class AuthRepositoryImpl(
         tokenStore.clear()
         return Result.success(Unit)
     }
-
-
 }

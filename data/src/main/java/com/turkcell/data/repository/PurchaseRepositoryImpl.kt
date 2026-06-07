@@ -27,7 +27,7 @@ class PurchaseRepositoryImpl(
     }.map { it -> it.toDomain() }
 
     override suspend fun getPurchase(id: String): Result<Purchase> =runCatchingApi {
-        purchaseApi.getPurchases(id)
+        purchaseApi.getPurchase(id)
 
     }.map { it -> it.toDomain() }
 

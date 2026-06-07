@@ -1,9 +1,11 @@
 package com.turkcell.ticketapp.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.turkcell.core.domain.event.Ticket
 import com.turkcell.core.domain.event.TicketRepository
+import com.turkcell.ticketapp.util.toUserMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +19,7 @@ data class TicketDetailUiState(
 )
 
 class TicketDetailViewModel(
+    private val application: Application,
     private val ticketRepository: TicketRepository,
     private val ticketId: String
 ) : ViewModel() {
@@ -36,7 +39,7 @@ class TicketDetailViewModel(
                     _state.update { it.copy(ticket = ticket, isLoading = false) }
                 },
                 onFailure = { error ->
-                    _state.update { it.copy(isLoading = false, errorMessage = error.toUserMessage()) }
+                    _state.update { it.copy(isLoading = false, errorMessage = error.toUserMessage(application)) }
                 }
             )
         }

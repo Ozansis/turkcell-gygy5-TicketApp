@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class TicketTypeInTicketDto(
     val id: String,
     val name: String,
-    val priceCents: Int,
+    val priceCents: Long,
     val event: EventInTicketDto
 )
